@@ -5,6 +5,7 @@ before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - export PATH="$HOME/.yarn/bin:$PATH"
 cache: yarn
+before_deploy: "npm version patch && git add package.json"
 deploy:
   on:
     branch: master
