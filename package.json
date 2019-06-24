@@ -22,7 +22,7 @@
         "prettier": "^1.18.2"
     },
     "scripts": {
-        "release": "",
+        "release": "npm version patch -m \"Bumped to version %s\"",
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
         "test": "jest",
