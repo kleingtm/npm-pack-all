@@ -8,8 +8,7 @@ cache: yarn
 before_deploy: "npm version patch && git add package.json"
 deploy:
   on:
-    branch: master
-    tag: latest
+    tags: true
   provider: npm
   email: kleingtm@gmail.com
   api_key:
