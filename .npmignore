@@ -7,3 +7,4 @@ jest.config.js
 .travis.yml
 .eslint*
 .prettierrc*
+.npm-pack-all-tmp
