@@ -74,4 +74,4 @@ typings/
 # Serverless directories
 .serverless
 .npm-pack-all-tmp
-
+package
