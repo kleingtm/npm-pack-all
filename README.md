@@ -1,6 +1,7 @@
 # npm-pack-all
 [![Build Status](https://travis-ci.org/kleingtm/npm-pack-all.svg?branch=master)](https://travis-ci.org/kleingtm/npm-pack-all)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)
 
 This can be useful when wanting to ship dependencies as part of the artifact -- side stepping the case
