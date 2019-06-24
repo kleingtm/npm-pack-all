@@ -1,0 +1,54 @@
+{
+    "name": "npm-pack-all",
+    "version": "1.0.0",
+    "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
+    "repository": "https://github.com/kleingtm/npm-pack-all.git",
+    "author": "Tom Kleingers <kleingtm@gmail.com>",
+    "license": "MIT",
+    "main": "index.js",
+    "bin": "index.js",
+    "dependencies": {
+        "minimist": "^1.2.0",
+        "pkg": "^4.4.0",
+        "shelljs": "^0.8.3"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-json": "^1.4.0",
+        "eslint-plugin-prettier": "^3.1.0",
+        "husky": "^2.4.1",
+        "jest": "^24.8.0",
+        "prettier": "^1.18.2"
+    },
+    "scripts": {
+        "lint": "eslint . --fix",
+        "husky": "yarn lint && yarn test",
+        "test": "jest",
+        "deploy": "pkg . --options expose-gc --out-path bin "
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint && yarn test"
+        }
+    },
+    "engines": {
+        "node": ">=6.4.0"
+    },
+    "files": [
+        "bin",
+        "index.js"
+    ],
+    "bundledDependencies": [
+        "minimist",
+        "pkg",
+        "shelljs",
+        "eslint",
+        "eslint-config-prettier",
+        "eslint-plugin-json",
+        "eslint-plugin-prettier",
+        "husky",
+        "jest",
+        "prettier"
+    ]
+}
