@@ -10,8 +10,6 @@ deploy:
   provider: script
   script: "npm version patch -m \"Bumping to %s\" && npm publish"
   email: kleingtm@gmail.com
-  on:
-    tags: true
   skip_cleanup: true
   api_key:
     secure: QZjzlM/ZJqP7gnSMftf0dLv1asmjX9EQZ7KN3PpymOjemO+49d/6Vl7dXSMypOPlJqQQsxvzNPasUaQESdbwgP1FdlCpgDZMDrIF3O/grx9O7lOonqrglIdam8R9mSNJonmaJHmumsXDgVA3i6vyaDmg+xUTbB73RuFCJuvYSxoJIPAGj1UzioVqrzcLIjoqiPCbgxrl/4kUmMGa6/T/jX0Gta/iIGhenftPbyS+7To0Cv9UD4nqRlH9UELr/jMh7jTXPQAtPUrMLTkOK8x3BI8Mcf7PFMa6GYJNtHOyi7071aV9vAWyp6mrGCmAb8PO6fdo1LzEC5GcglqUhQYXatG25WKrH8nvpOaXubU2nd+axgael2UDyOs/pmiCQ54lQRl7ls2lv7L93uwZD3FWigriR12Xz+dxYncBE7bhv5RnXCfjX/hiPx8aEL0aSSmBYfemNfAi+Jd+brPfsBoqEMEgp3RbbPLKXeFN0+gDko7kObEM+Bys639AHy2lGAK3U45ecSlYKgmiYf+2uwbtrvDtbDQH9jhAVjyR+yOJzVwoXApZue1GPEkb2UJNtbAFFAq1r2sOzrnfUbbPVSKm0C9VhGpLSAuv9tmo6Mhucs+ZzTrJJNnJUmYhIQsAokOP/X9mf3ph1zRl4kufA0ujZQBm9jG4FYe3z5bsAreXbbU=
