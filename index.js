@@ -21,23 +21,29 @@ console.info(`
 | '--'N|| '--'P|| '--'M|| '--'-|| '--'P|| '--'A|| '--'C|| '--'K|| '--'-|| '--'A|| '--'L|| '--'L|
 \`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'\`------'\n`);
 
+
 // parse cli args
 const cliArgs = require(`minimist`)(process.argv.slice(2));
 if (typeof cliArgs.output !== `string` && cliArgs.output) {
     throw new CliError(`--output`, cliArgs.output, `The \`--output\` flag requires a string filename`);
 }
 
+
 const packageJson = require(path.join(process.cwd(), `package.json`));
+
 
 shell.config.fatal = true; // error out if a shell command errors out
 shell.config.silent = true;
 
+
 // create temp directory
 createTempDirectory(TMP_DIRECTORY);
+
 
 // copy existing package.json and lock files (keep linting, etc in tact)
 console.info(`Saving existing package.json and lock files`);
 copyFiles(process.cwd(), TMP_DIRECTORY, FILES_TO_BACKUP);
+
 
 // set bundledDependencies in package.json
 const CMDs = {
@@ -50,18 +56,30 @@ const CMDs = {
         yarn: `yarn install --force`
     }
 };
+
+
 setBundledDependencies(packageJson, CMDs, packageManager);
+
 
 // pack with npm
 console.info(`\nPacking source code${!cliArgs[`dev-deps`] ? `` : `, development`} and production dependencies...`);
 exec(`npm -dd pack`, { silent: false, timeout: cliArgs.timeout || 3 * 60 * 1000 }); // 3 min timeout
+
 
 // restoring package.json and lock files back to project root
 console.info(`Restoring original package.json and lock files`);
 moveFiles(TMP_DIRECTORY, process.cwd(), FILES_TO_BACKUP);
 shell.rm(`-Rf`, TMP_DIRECTORY);
 
+
 setArtifactName(cliArgs);
+
+
+// re-install full dependency tree
+console.info(`Restoring original node_modules tree:\n${CMDs.install[packageManager]}`);
+exec(CMDs.install[packageManager]);
+
+
 
 function createTempDirectory(dir) {
     shell.rm(`-Rf`, dir);

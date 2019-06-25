@@ -1,6 +1,6 @@
 {
     "name": "npm-pack-all",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
     "repository": "https://github.com/kleingtm/npm-pack-all.git",
     "author": "Tom Kleingers <kleingtm@gmail.com>",
@@ -13,16 +13,19 @@
         "shelljs": "^0.8.3"
     },
     "devDependencies": {
+        "coveralls": "^3.0.4",
         "eslint": "^5.16.0",
         "eslint-config-prettier": "^5.0.0",
         "eslint-plugin-json": "^1.4.0",
         "eslint-plugin-prettier": "^3.1.0",
         "husky": "^2.4.1",
         "jest": "^24.8.0",
+        "lodash": "^4.17.11",
         "prettier": "^1.18.2"
     },
     "scripts": {
-        "release": "npm version patch -m \"Bumped to version %s\"",
+        "release": "npm config set loglevel verbose && npm publish --registry=https://registry.npmjs.org",
+        "bump": "npm version patch -m \"Bumped to version %s\"",
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
         "test": "jest",
@@ -36,20 +39,9 @@
     "engines": {
         "node": ">=6.4.0"
     },
-    "files": [
-        "bin",
-        "index.js"
-    ],
     "bundledDependencies": [
         "minimist",
         "pkg",
-        "shelljs",
-        "eslint",
-        "eslint-config-prettier",
-        "eslint-plugin-json",
-        "eslint-plugin-prettier",
-        "husky",
-        "jest",
-        "prettier"
+        "shelljs"
     ]
 }
