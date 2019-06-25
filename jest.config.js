@@ -2,11 +2,18 @@ module.exports = {
     testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
     collectCoverage: true,
     coverageDirectory: "./coverage",
-    collectCoverageFrom: ["index.js"],
-    coveragePathIgnorePatterns: [],
+    collectCoverageFrom: ["**/*"],
+    coveragePathIgnorePatterns: [
+        `(.*)\.mocks\.(.*)`,
+        `\/coverage`,
+        `jest\.config`,
+        `package\.json`,
+        `\.lock`,
+        `\-lock`,
+        `^[.]`
+    ],
     coverageThreshold: {
         global: {
-            functions: 100,
             statements: 80
         }
     },
