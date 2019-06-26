@@ -28,7 +28,8 @@
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
         "test": "jest",
-        "deploy": "pkg . --options expose-gc --out-path bin "
+        "deploy": "pkg . --options expose-gc --out-path bin ",
+        "env": "printenv"
     },
     "husky": {
         "hooks": {
@@ -37,10 +38,5 @@
     },
     "engines": {
         "node": ">=6.4.0"
-    },
-    "bundledDependencies": [
-        "minimist",
-        "pkg",
-        "shelljs"
-    ]
+    }
 }

@@ -14,7 +14,7 @@ after_success:
   - git config --local user.email ${NPM_EMAIL}
   - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git
   - export COMMIT=$(git rev-parse HEAD)
-  - git checkout -B origin/master
+  - git checkout -B origin master
   - export NPM_VERSION=$(npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)")
   - git add . && git status && git commit -m "Travis build=${TRAVIS_BUILD}, version=${NPM_VERSION} $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
   - git push --quiet --set-upstream origin master
