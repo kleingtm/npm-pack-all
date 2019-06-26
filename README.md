@@ -43,7 +43,7 @@ yarn add npm-pack-all
 
 ## Use
 ```bash
-
+node_modules/.bin/npm-pack-all
 
 ```
 
