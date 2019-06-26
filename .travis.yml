@@ -3,10 +3,6 @@ os:
 language: node_js
 node_js:
   - node
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH="$HOME/.yarn/bin:$PATH"
-cache: yarn
 after_success:
   # Set up git user name and tag this commit
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
@@ -15,8 +11,7 @@ after_success:
   - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git
   - export COMMIT=$(git rev-parse HEAD)
   - git checkout -B origin master
-  - export NPM_VERSION=$(npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)")
-  - git add . && git status && git commit -m "Travis build=${TRAVIS_BUILD}, version=${NPM_VERSION} $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
+  - npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
   - git push --quiet --set-upstream origin master
 deploy:
   skip_cleanup: true
