@@ -8,6 +8,7 @@
     "main": "index.js",
     "bin": "index.js",
     "dependencies": {
+        "lodash": "^4.17.11",
         "minimist": "^1.2.0",
         "pkg": "^4.4.0",
         "shelljs": "^0.8.3"
@@ -20,7 +21,6 @@
         "eslint-plugin-prettier": "^3.1.0",
         "husky": "^2.4.1",
         "jest": "^24.8.0",
-        "lodash": "^4.17.11",
         "prettier": "^1.18.2"
     },
     "scripts": {
