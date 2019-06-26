@@ -16,6 +16,7 @@ after_success:
   - export COMMIT=$(git rev-parse HEAD)
   - git checkout -B origin/master
   - npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
+  - git status
   - git push --quiet --set-upstream origin master
 deploy:
   skip_cleanup: true
