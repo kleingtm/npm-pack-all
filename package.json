@@ -25,7 +25,6 @@
     },
     "scripts": {
         "release": "npm config set loglevel verbose && npm publish --registry=https://registry.npmjs.org",
-        "bump": "npm version patch -m \"Bumped to version %s\"",
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
         "test": "jest",
