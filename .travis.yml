@@ -12,7 +12,7 @@ after_success:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - git config --local user.name ${GIT_USER}
   - git config --local user.email ${NPM_EMAIL}
-  - git remote set-url origin ${GITHUB_TOKEN}@github.com:${GIT_USER}/npm-pack-all.git
+  - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git
   - npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
   - git push --quiet --set-upstream origin master
 deploy:
