@@ -3,15 +3,7 @@ module.exports = {
     collectCoverage: true,
     coverageDirectory: "./coverage",
     collectCoverageFrom: ["**/*"],
-    coveragePathIgnorePatterns: [
-        `(.*)\.mocks\.(.*)`,
-        `\/coverage`,
-        `jest\.config`,
-        `package\.json`,
-        `\.lock`,
-        `\-lock`,
-        `^[.]`
-    ],
+    coveragePathIgnorePatterns: [`(.*)\.mocks\.(.*)`, `\/coverage`, `jest\.config`, `package\.json`, `\.lock`, `\-lock`, `^[.]`],
     coverageThreshold: {
         global: {
             statements: 80

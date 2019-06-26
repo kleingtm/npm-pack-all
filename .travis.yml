@@ -1,18 +1,24 @@
 language: node_js
 node_js:
-- node
+  - node
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- export PATH="$HOME/.yarn/bin:$PATH"
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
 cache: yarn
 after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-before_deploy: npm run bump
+after_success:
+  - ".travis/push.sh"
 deploy:
+  skip_cleanup: true
   provider: npm
   email: kleingtm@gmail.com
   tag: next
   api_key:
     secure: gGKQxRjWjj+iYvdER10eAnG1RA6A9oUC8NsIlaaRwiA073XkpwYu/jqvgMctAv7m8LKTes/TLRUGVNH5hJ8eR4HoYnTPzaJiem9+7VRSLKka8JA2iY/t8pNLXTzRBOhB8L+Gkcg6IRdRTizDSNKXNvDKYomI/FJ+R9647X2pRLUw9leIoQ+UsDNwS7Lxegj31pUDGo5r6Ku3moHPoLTCedH7XBdvrD6XPH0l/26zRTsQVsHURqSD2kkGf55hbNX6ZRV/AgMR/AbsIwnXP6LyctzO2nS77deBvuexoDfnQXKsSmpiUkvw1gJFUVQM+e8vaJZXeN+oDmG5sEaGEGIpG4gpBIHIbA82ZyYL6UUU4kVcGAN+MqpjcwZAQvv3vopY4k8A0nd3BgDL5ZOvTFcJohU8TwBaXJFtxl6SxYbZ5gC2c+slFzNGPX2a5A8Kh/tyXMrSnLCMggJG2HNyFCOoBK+6AwXVb3UyqUj/G2eYBBGqTV9zBvbvFYec81z+xZwn/fHdrAhTunh3PZ8HfrZ3Ns5jDIo3uqZPrSveoxLDKLur76C7R+Nu90wM/LAST8PYzv0Xk/4DvMQKJYA9iIHoocWNaPe/XweZUn8sfMIQSJwKuewOhjEYadci3GzGnHWnizCZasfrXaEYRXPSir8PbZf3YDH4K4+/muwZdG5W+0w=
   on:
+    tags: true
     branch: master
     repo: kleingtm/npm-pack-all
+env:
+  global:
+    secure: NElq7/NR9Sb9k3F4rfRwvAgLNETB1XMyEZNLV/bWll8piVmBs58DvVV9m25y53LFgiu8hVSOTPJSO1iIUofcxngjkKlgSdo9LxlrANpg5qn6vHXyTxtx9jrNmdgF7HHvACfXdlMQAyktxBtuZ+h7F+fx1dnhmqUBX6MEdpnKrR6AymfzMUI9W1edDDq51nRy18G29MPR/FPhWLU4Wq2cyEX4Hh12rXfKv0D4IiGb5vq9Cu+4N8J7mOUjZoEg66MKc2wtsAbel65rwoJydAetWBcGAt30r1sK6aOh16WnvURm/dNqEtdIKJtxVmpKKXOciP2A0nJXapIQMjOSRDP/RzVchevjBkCFJnHkM6CVRwxgSytpCiHYPJ/kKhtmjoq7G5i1O+plG9BfKqZabwIDmRZs8eC7ismn87XpArGiY+qeizzT1hnkpxrRqUDmpl+KYyQufYjpGF8z8L3BzFkA7nLKpNsX3izQRRhxXLuXGVroCAjPYcHNWFtXKDZzP6pP9HeZ0emLX00CASoWvw/zq5nicvSg0CTkKEyuhUihzsJSUcPXu6setHleZiUj0rSJKULO8hW3AGD5EY4TODux1j/jFeYKMuvE1umsyGR6RiZJeKcDlazfKWEpU1zxBL/WB6F60EU7IHLRMPFKbp987Ivt/4oxkvdsMcG9USFRbY8=

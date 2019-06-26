@@ -1,9 +1,9 @@
 const path = require(`path`);
 
 const TEST_SUITE = `npm-pack-all: ${__filename}`;
-const { CliError , safetyDecorator, shellExecDecorator } = require(path.join(__dirname, `../utils.index`));
+const { CliError, safetyDecorator, shellExecDecorator } = require(path.join(__dirname, `../utils.index`));
 
-beforeAll(()=> {
+beforeAll(() => {
     console.error = jest.fn();
 });
 
@@ -35,23 +35,24 @@ describe(TEST_SUITE, () => {
     });
 
     test("Can use safetyDecorator to NOT exception if cp/mv files don't exist", () => {
-
         const MSG_NOT_TO_ERROR_ON = `no such file`;
 
         // don't throw on `no such file`
-        expect(safetyDecorator(() => {
-            throw new Error(MSG_NOT_TO_ERROR_ON)
-        })).not.toThrow();
+        expect(
+            safetyDecorator(() => {
+                throw new Error(MSG_NOT_TO_ERROR_ON);
+            })
+        ).not.toThrow();
 
         // error otherwise
-        expect(safetyDecorator(() => {
-            throw new Error()
-        })).toThrow();
-
+        expect(
+            safetyDecorator(() => {
+                throw new Error();
+            })
+        ).toThrow();
     });
 
     test("Can decorate shell.exec() to handle errors", () => {
-
         const SUCCESSFUL_RESULT = {
             code: 0,
             stdout: `Successful result`,
@@ -65,14 +66,17 @@ describe(TEST_SUITE, () => {
         };
 
         // don't throw on `no such file`
-        expect(shellExecDecorator(() => {
-            return SUCCESSFUL_RESULT
-        })()).toEqual(SUCCESSFUL_RESULT);
+        expect(
+            shellExecDecorator(() => {
+                return SUCCESSFUL_RESULT;
+            })()
+        ).toEqual(SUCCESSFUL_RESULT);
 
         // error otherwise
-        expect(shellExecDecorator(() => {
-            return FAILING_RESULT
-        })).toThrow();
-
+        expect(
+            shellExecDecorator(() => {
+                return FAILING_RESULT;
+            })
+        ).toThrow();
     });
 });
