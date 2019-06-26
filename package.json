@@ -1,6 +1,6 @@
 {
     "name": "npm-pack-all",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
     "repository": "https://github.com/kleingtm/npm-pack-all.git",
     "author": "Tom Kleingers <kleingtm@gmail.com>",
