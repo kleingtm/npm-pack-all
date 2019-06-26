@@ -13,6 +13,8 @@ after_success:
   - git config --local user.name ${GIT_USER}
   - git config --local user.email ${NPM_EMAIL}
   - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git
+  - export COMMIT=$(git rev-parse HEAD)
+  - git checkout -B origin/master
   - npm version patch -m "Travis build=${TRAVIS_BUILD}, version=%s $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1)"
   - git push --quiet --set-upstream origin master
 deploy:
