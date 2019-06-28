@@ -27,7 +27,7 @@ module.exports.safetyDecorator = function(wrapped) {
 
 module.exports.shellExecDecorator = function(wrapped) {
     return function() {
-        const result = wrapped.apply(this, arguments);
+        const result = wrapped.apply(this, arguments, { maxBuffer: 1024 * 1024 * 10 });
         if (result.code !== 0) {
             console.error(JSON.stringify(result));
             throw new Error(result.stderr);
