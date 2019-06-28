@@ -11,7 +11,6 @@
         "lodash": "^4.17.11",
         "minimist": "^1.2.0",
         "nexe": "^3.3.2",
-        "pkg": "^4.4.0",
         "shelljs": "^0.8.3"
     },
     "devDependencies": {
