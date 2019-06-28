@@ -6,6 +6,7 @@ node_js:
 after_success:
   # Set up git user name and tag this commit
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - nexe index.js --output bin/npm-pack-all
   - git config --local user.name ${GIT_USER}
   - git config --local user.email ${NPM_EMAIL}
   - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git

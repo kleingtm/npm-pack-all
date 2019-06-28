@@ -6,10 +6,11 @@
     "author": "Tom Kleingers <kleingtm@gmail.com>",
     "license": "MIT",
     "main": "index.js",
-    "bin": "index.js",
+    "bin": "bin/npm-pack-all",
     "dependencies": {
         "lodash": "^4.17.11",
         "minimist": "^1.2.0",
+        "nexe": "^3.3.2",
         "pkg": "^4.4.0",
         "shelljs": "^0.8.3"
     },
@@ -24,6 +25,7 @@
         "prettier": "^1.18.2"
     },
     "scripts": {
+        "compile": "nexe index.js --output bin/npm-pack-all",
         "release": "npm config set loglevel verbose && npm publish --registry=https://registry.npmjs.org",
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
