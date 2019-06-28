@@ -24,7 +24,7 @@
         "prettier": "^1.18.2"
     },
     "scripts": {
-        "compile": "nexe index.js --output bin/npm-pack-all",
+        "compile": "nexe index.js --output bin/npm-pack-all --build",
         "release": "npm config set loglevel verbose && npm publish --registry=https://registry.npmjs.org",
         "lint": "eslint . --fix",
         "husky": "yarn lint && yarn test",
