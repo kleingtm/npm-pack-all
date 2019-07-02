@@ -129,6 +129,77 @@ describe(TEST_SUITE, () => {
         // call script
         require(`../index`);
     });
+
+    test("Does output to --output flag location", () => {
+        const outputLoc = `deploy/artifact.tgz`;
+        let mockArgs = `--output ${outputLoc}`;
+        mockArgs = minimist(mockArgs.split(` `));
+
+        //  mock input arguments
+        jest.mock(`minimist`, () => {
+            return jest.fn(() => mockArgs); // supply mock arguments to the script
+        });
+
+        jest.mock(`fs`, () => {
+            return {
+                existsSync: jest.fn(() => false), // assume output dir doesn't exist
+                writeFileSync: jest.fn((file, data) => {
+                    const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
+                    const packageJson = require(packageJsonLoc);
+                    const deps = Object.keys(packageJson.dependencies);
+                    expect(file).toEqual(packageJsonLoc);
+                    expect(JSON.parse(data).bundledDependencies).toEqual(deps);
+                })
+            };
+        });
+
+        // mock shell commands
+        jest.mock(`shelljs`, () => {
+            return {
+                code: 0, // success always
+                config: { fatal: false, silent: false },
+                exec: mockShellFn(`exec`),
+                cp: mockShellFn(`cp`),
+                mv: mockShellFn(`mv`),
+                rm: mockShellFn(`rm`),
+                mkdir: mockShellFn(`mkdir`),
+                touch: mockShellFn(`touch`)
+            };
+        });
+
+        // have access to the mock shell
+        const mockShell = require(`shelljs`);
+
+        // call script
+        require(`../index`);
+
+        const { orderedArgs } = sortModuleMockFnsByCallOrder(mockShell);
+        const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
+        const packageJson = require(packageJsonLoc);
+
+        // these commands should be run in the following order by default
+        expect(orderedArgs).toEqual([
+            `rm("-Rf","${TMP_DIR}")`,
+            `mkdir("-p","${TMP_DIR}")`,
+            `cp("-Rf","${path.join(process.cwd(), "package.json")}","${TMP_DIR}/package.json")`,
+            `cp("-Rf","${path.join(process.cwd(), "package-lock.json")}","${TMP_DIR}/package-lock.json")`,
+            `cp("-Rf","${path.join(process.cwd(), "yarn.lock")}","${TMP_DIR}/yarn.lock")`,
+            `cp("-Rf","${path.join(process.cwd(), ".npmignore")}","${TMP_DIR}/.npmignore")`,
+            `touch(".npmignore")`,
+            `exec("npm -dd pack",{"silent":false,"timeout":180000})`,
+            `mv("-f","${TMP_DIR}/package.json","${path.join(process.cwd(), "package.json")}")`,
+            `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
+            `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,
+            `mv("-f","${TMP_DIR}/.npmignore","${path.join(process.cwd(), ".npmignore")}")`,
+            `rm("-Rf","${TMP_DIR}")`,
+            `rm("-Rf",".npmignore")`,
+            `mkdir("-p","${path.join(process.cwd(), "deploy")}")`,
+            `mv("-f","${path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`)}","${path.join(
+                process.cwd(),
+                outputLoc
+            )}")`
+        ]);
+    });
 });
 
 function sortModuleMockFnsByCallOrder(mocks) {

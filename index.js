@@ -25,6 +25,7 @@ const cliArgs = require(`minimist`)(process.argv.slice(2));
 if (typeof cliArgs.output !== `string` && cliArgs.output) {
     throw new CliError(`--output`, cliArgs.output, `The \`--output\` flag requires a string filename`);
 }
+console.info(`CLI Args: ${JSON.stringify(cliArgs, null, 4)}\n`);
 
 const packageJson = require(path.join(process.cwd(), `package.json`));
 
@@ -74,6 +75,18 @@ function setBundledDependencies(pj) {
 
 function setArtifactName(args) {
     if (args.output) {
+        const outputDir = path.parse(path.join(process.cwd(), cliArgs.output)).dir;
+        if (outputDir && !fs.existsSync(outputDir)) {
+            console.info(`Creating directory ${outputDir}`);
+            shell.mkdir(`-p`, outputDir);
+        }
+
+        console.info(
+            `Moving ${path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`)} to ${path.join(
+                process.cwd(),
+                cliArgs.output
+            )}`
+        );
         shell.mv(
             `-f`,
             path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`),

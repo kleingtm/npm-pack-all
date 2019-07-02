@@ -6,11 +6,10 @@
     "author": "Tom Kleingers <kleingtm@gmail.com>",
     "license": "MIT",
     "main": "index.js",
-    "bin": "bin/npm-pack-all",
+    "bin": "index.js",
     "dependencies": {
         "lodash": "^4.17.11",
         "minimist": "^1.2.0",
-        "nexe": "^3.3.2",
         "shelljs": "^0.8.3"
     },
     "devDependencies": {
@@ -38,7 +37,6 @@
         }
     },
     "engines": {
-        "node": ">=6.4.0",
-        "npm" : "~1.0.20"
+        "node": ">=6.4.0"
     }
 }
