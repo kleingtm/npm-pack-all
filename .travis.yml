@@ -14,7 +14,7 @@ after_success:
   - git checkout -B master
   - npm version patch -m "Published version=%s, Travis=$TRAVIS_JOB_NUMBER - $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1) [skip ci]"
   - git status
-  - git push --quiet --set-upstream origin master
+  - git push --quiet --tags --set-upstream origin master
   - git push
 deploy:
   skip_cleanup: true
