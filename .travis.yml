@@ -5,6 +5,7 @@ node_js:
   - "10"
 after_success:
   # Set up git user name and tag this commit
+  - set -e
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - git config --local user.name ${GIT_USER}
   - git config --local user.email ${NPM_EMAIL}
