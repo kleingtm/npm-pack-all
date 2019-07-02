@@ -43,8 +43,14 @@ yarn add npm-pack-all
 
 ## Use
 ```bash
-node_modules/.bin/npm-pack-all
+node_modules/npm-pack-all
 
 ```
+
+If you want to output your .tgz artifact to a different spot (or with a different name)
+```bash
+
+```
+
 
 
