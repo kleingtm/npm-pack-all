@@ -11,7 +11,7 @@ after_success:
   - git remote set-url origin https://${GITHUB_TOKEN}@github.com/${GIT_USER}/npm-pack-all.git
   - export COMMIT=$(git rev-parse HEAD)
   - git checkout -B master
-  - npm version patch -m "Published version=%s, Travis:${TRAVIS_JOB_NUMBER} - $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1) [skip ci]"
+  - npm version patch -m "Published version=%s, Travis\ \#${TRAVIS_JOB_NUMBER} - $(date +'%Y-%m-%d %H:%M') $(git log --format=%h -1) [skip ci]"
   - git status
   - git push --quiet --set-upstream origin master
   - git push
