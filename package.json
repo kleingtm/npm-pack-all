@@ -1,8 +1,17 @@
 {
     "name": "npm-pack-all",
-    "version": "1.10.5",
+    "version": "1.10.6",
     "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
-    "keywords": ["npm", "pack", "yarn", "package", "artifact", "dependencies", "pack all dependencies", "bundle"],
+    "keywords": [
+        "npm",
+        "pack",
+        "yarn",
+        "package",
+        "artifact",
+        "dependencies",
+        "pack all dependencies",
+        "bundle"
+    ],
     "repository": "https://github.com/kleingtm/npm-pack-all.git",
     "author": "Tom Kleingers <kleingtm@gmail.com>",
     "license": "MIT",
