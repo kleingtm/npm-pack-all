@@ -48,5 +48,10 @@
     },
     "engines": {
         "node": ">=6.4.0"
-    }
+    },
+    "bundledDependencies": [
+        "lodash",
+        "minimist",
+        "shelljs"
+    ]
 }

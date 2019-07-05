@@ -43,7 +43,11 @@ setBundledDependencies(packageJson);
 
 // pack with npm
 console.info(`\nPacking source code${!cliArgs[`dev-deps`] ? `` : `, development`} and production dependencies...`);
-exec(`npm -dd pack`, { silent: false, timeout: cliArgs.timeout || 3 * 60 * 1000 }); // 3 min timeout
+exec(`npm -dd pack`, {
+    silent: false,
+    maxBuffer: 1024 * 1024 * 10,
+    timeout: cliArgs.timeout || 3 * 60 * 1000 // 3 min timeout
+});
 
 // restoring package.json and lock files back to project root
 console.info(`Restoring original package.json and lock files`);
