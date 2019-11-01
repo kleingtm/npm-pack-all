@@ -1,6 +1,6 @@
 {
     "name": "npm-pack-all",
-    "version": "1.10.9",
+    "version": "1.10.10",
     "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
     "keywords": [
         "npm",
