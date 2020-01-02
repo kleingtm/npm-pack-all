@@ -53,7 +53,7 @@ exec(`npm -dd pack`, {
 console.info(`Restoring original package.json and lock files`);
 moveFiles(TMP_DIRECTORY, process.cwd(), FILES_TO_BACKUP);
 shell.rm(`-Rf`, TMP_DIRECTORY);
-shell.rm(`-Rf`, `.npmignore`);
+// shell.rm(`-Rf`, `.npmignore`);
 
 setArtifactName(cliArgs);
 

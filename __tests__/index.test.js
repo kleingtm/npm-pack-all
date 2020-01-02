@@ -19,7 +19,8 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
+    jest.clearAllMocks();
     shell.rm(`-Rf`, `*.tgz`); // call this after post mock restore
 });
 
@@ -82,8 +83,7 @@ describe(TEST_SUITE, () => {
             `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,
             `mv("-f","${TMP_DIR}/.npmignore","${path.join(process.cwd(), ".npmignore")}")`,
-            `rm("-Rf","${TMP_DIR}")`,
-            `rm("-Rf",".npmignore")`
+            `rm("-Rf","${TMP_DIR}")`
         ]);
     });
 
@@ -192,13 +192,37 @@ describe(TEST_SUITE, () => {
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,
             `mv("-f","${TMP_DIR}/.npmignore","${path.join(process.cwd(), ".npmignore")}")`,
             `rm("-Rf","${TMP_DIR}")`,
-            `rm("-Rf",".npmignore")`,
             `mkdir("-p","${path.join(process.cwd(), "deploy")}")`,
             `mv("-f","${path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`)}","${path.join(
                 process.cwd(),
                 outputLoc
             )}")`
         ]);
+    });
+
+    test("Return .npmignore to proper state", () => {
+        const fs = jest.requireActual(`fs`);
+        const npmIgnoreContent = fs.existsSync(`.npmignore`) && fs.readFileSync(`.npmignore`);
+
+        // mock shell commands
+        jest.mock(`shelljs`, () => {
+            return {
+                code: 0, // success always
+                config: { fatal: false, silent: false },
+                exec: mockShellFn(`exec`),
+                cp: mockShellFn(`cp`),
+                mv: mockShellFn(`mv`),
+                rm: mockShellFn(`rm`),
+                mkdir: mockShellFn(`mkdir`),
+                touch: mockShellFn(`touch`)
+            };
+        });
+
+        // call script
+        require(`../index`);
+
+        // if npmIgnoreExists, make sure it was replaced correctly
+        !!npmIgnoreContent && expect(fs.existsSync(`.npmignore`)).toBeTruthy();
     });
 });
 
