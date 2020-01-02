@@ -1,8 +1,8 @@
 # npm-pack-all
-[![NPM version](https://img.shields.io/npm/v/npm-pack-all.svg?style=flat-square)](https://www.npmjs.com/package/npm-pack-all)
+[![Version](https://img.shields.io/github/package-json/v/kleingtm/npm-pack-all.svg)](https://www.npmjs.com/package/npm-pack-all)
 [![Build Status](https://travis-ci.org/kleingtm/npm-pack-all.svg?branch=master)](https://travis-ci.org/kleingtm/npm-pack-all)
 [![Coverage Status](https://coveralls.io/repos/github/kleingtm/npm-pack-all/badge.svg?branch=master)](https://coveralls.io/github/kleingtm/npm-pack-all?branch=master)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)

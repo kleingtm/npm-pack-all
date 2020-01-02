@@ -1,6 +1,7 @@
 {
     "name": "npm-pack-all",
     "version": "1.10.10",
+    "version": "1.11.0",
     "description": "A simple utility to package all node_modules dependencies when running `npm pack` (not devDependencies)",
     "keywords": [
         "npm",
@@ -18,6 +19,7 @@
     "main": "index.js",
     "bin": "index.js",
     "dependencies": {
+        "handlebars": "^4.5.3",
         "lodash": "^4.17.11",
         "minimist": "^1.2.0",
         "shelljs": "^0.8.3"
