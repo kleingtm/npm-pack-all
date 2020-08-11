@@ -64,7 +64,7 @@ function createTempDirectory(dir) {
 
 function setBundledDependencies(pj) {
     // prune - get rid of devDependencies
-    pj.bundledDependencies = Object.keys(pj.dependencies);
+    pj.bundledDependencies = Object.keys(pj.dependencies || {});
     if (cliArgs[`dev-deps`]) {
         console.info(`Detected --dev-deps\n\nInstalling all modules...`);
         console.warn(`To save time and space, you may want to think about only packaging production dependencies`);
