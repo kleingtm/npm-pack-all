@@ -77,8 +77,7 @@ describe(TEST_SUITE, () => {
             `cp("-Rf","${path.join(process.cwd(), "package-lock.json")}","${TMP_DIR}/package-lock.json")`,
             `cp("-Rf","${path.join(process.cwd(), "yarn.lock")}","${TMP_DIR}/yarn.lock")`,
             `cp("-Rf","${path.join(process.cwd(), ".npmignore")}","${TMP_DIR}/.npmignore")`,
-            `touch(".npmignore")`,
-            `exec("npm -dd pack",{"silent":false,"maxBuffer":10485760,"timeout":180000})`,
+            `exec("npm -s pack",{"maxBuffer":10485760,"timeout":180000})`,
             `mv("-f","${TMP_DIR}/package.json","${path.join(process.cwd(), "package.json")}")`,
             `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,
@@ -102,12 +101,16 @@ describe(TEST_SUITE, () => {
                     return arg.includes(`package-lock.json`);
                 }),
                 writeFileSync: jest.fn((file, data) => {
-                    const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
-                    const packageJson = require(packageJsonLoc);
-                    const deps = Object.keys(packageJson.dependencies);
-                    const devDeps = Object.keys(packageJson.devDependencies);
-                    expect(file).toEqual(packageJsonLoc);
-                    expect(JSON.parse(data).bundledDependencies).toEqual(deps.concat(devDeps));
+                    if (file.includes("package.json")) {
+                        const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
+                        const packageJson = require(packageJsonLoc);
+                        const deps = Object.keys(packageJson.dependencies);
+                        const devDeps = Object.keys(packageJson.devDependencies);
+                        expect(file).toEqual(packageJsonLoc);
+                        expect(JSON.parse(data).bundledDependencies).toEqual(deps.concat(devDeps));
+                    } else if (file.includes(".npmrc")) {
+                        expect(JSON.parse(data)).toEqual(".npm-pack-all-tmp");
+                    }
                 })
             };
         });
@@ -144,11 +147,15 @@ describe(TEST_SUITE, () => {
             return {
                 existsSync: jest.fn(() => false), // assume output dir doesn't exist
                 writeFileSync: jest.fn((file, data) => {
-                    const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
-                    const packageJson = require(packageJsonLoc);
-                    const deps = Object.keys(packageJson.dependencies);
-                    expect(file).toEqual(packageJsonLoc);
-                    expect(JSON.parse(data).bundledDependencies).toEqual(deps);
+                    if (file.includes("package.json")) {
+                        const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
+                        const packageJson = require(packageJsonLoc);
+                        const deps = Object.keys(packageJson.dependencies);
+                        expect(file).toEqual(packageJsonLoc);
+                        expect(JSON.parse(data).bundledDependencies).toEqual(deps);
+                    } else if (file.includes(".npmrc")) {
+                        expect(JSON.parse(data)).toEqual(".npm-pack-all-tmp");
+                    }
                 })
             };
         });
@@ -185,8 +192,7 @@ describe(TEST_SUITE, () => {
             `cp("-Rf","${path.join(process.cwd(), "package-lock.json")}","${TMP_DIR}/package-lock.json")`,
             `cp("-Rf","${path.join(process.cwd(), "yarn.lock")}","${TMP_DIR}/yarn.lock")`,
             `cp("-Rf","${path.join(process.cwd(), ".npmignore")}","${TMP_DIR}/.npmignore")`,
-            `touch(".npmignore")`,
-            `exec("npm -dd pack",{"silent":false,"maxBuffer":10485760,"timeout":180000})`,
+            `exec("npm -s pack",{"maxBuffer":10485760,"timeout":180000})`,
             `mv("-f","${TMP_DIR}/package.json","${path.join(process.cwd(), "package.json")}")`,
             `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,

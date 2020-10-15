@@ -43,8 +43,7 @@ setBundledDependencies(packageJson);
 
 // pack with npm
 console.info(`\nPacking source code${!cliArgs[`dev-deps`] ? `` : `, development`} and production dependencies...`);
-exec(`npm -dd pack`, {
-    silent: false,
+exec(`npm -s pack`, {
     maxBuffer: 1024 * 1024 * 10,
     timeout: cliArgs.timeout || 3 * 60 * 1000 // 3 min timeout
 });
@@ -103,7 +102,7 @@ function copyFiles(from, to, files) {
     files.forEach(file => {
         cp(`-Rf`, path.join(from, file), path.join(to, file));
     });
-    shell.touch(`.npmignore`);
+    fs.writeFileSync(".npmignore", ".npm-pack-all-tmp");
 }
 
 function moveFiles(from, to, files) {

@@ -18,9 +18,8 @@
     "main": "index.js",
     "bin": "index.js",
     "dependencies": {
-        "handlebars": "^4.5.3",
         "lodash": "^4.17.11",
-        "minimist": "^1.2.0",
+        "minimist": "^1.2.5",
         "shelljs": "^0.8.3"
     },
     "devDependencies": {
