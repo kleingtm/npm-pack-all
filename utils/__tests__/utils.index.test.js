@@ -1,7 +1,7 @@
 const path = require(`path`);
 
 const TEST_SUITE = `npm-pack-all: ${__filename}`;
-const { CliError, safetyDecorator, shellExecDecorator } = require(path.join(__dirname, `../utils.index`));
+const { CliError, safetyDecorator } = require(path.join(__dirname, `../utils.index`));
 
 beforeAll(() => {
     console.error = jest.fn();
@@ -48,34 +48,6 @@ describe(TEST_SUITE, () => {
         expect(
             safetyDecorator(() => {
                 throw new Error();
-            })
-        ).toThrow();
-    });
-
-    test("Can decorate shell.exec() to handle errors", () => {
-        const SUCCESSFUL_RESULT = {
-            code: 0,
-            stdout: `Successful result`,
-            stderr: null
-        };
-
-        const FAILING_RESULT = {
-            code: 1,
-            stdout: null,
-            stderr: `Failure occurred`
-        };
-
-        // don't throw on `no such file`
-        expect(
-            shellExecDecorator(() => {
-                return SUCCESSFUL_RESULT;
-            })()
-        ).toEqual(SUCCESSFUL_RESULT);
-
-        // error otherwise
-        expect(
-            shellExecDecorator(() => {
-                return FAILING_RESULT;
             })
         ).toThrow();
     });
