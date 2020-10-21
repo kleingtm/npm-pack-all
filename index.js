@@ -2,12 +2,11 @@
 const fs = require(`fs`);
 const path = require(`path`);
 const shell = require(`shelljs`);
+const { spawn } = require("child_process");
 
-const { CliError, safetyDecorator, shellExecDecorator } = require(path.join(__dirname, `./utils/utils.index`));
-
+const { CliError, safetyDecorator } = require(path.join(__dirname, `./utils/utils.index`));
 const cp = safetyDecorator(shell.cp);
 const mv = safetyDecorator(shell.mv);
-const exec = shellExecDecorator(shell.exec);
 
 const FILES_TO_BACKUP = [`package.json`, `package-lock.json`, `yarn.lock`, `.npmignore`];
 const TMP_DIRECTORY = path.join(process.cwd(), `.npm-pack-all-tmp`);
@@ -43,9 +42,9 @@ setBundledDependencies(packageJson);
 
 // pack with npm
 console.info(`\nPacking source code${!cliArgs[`dev-deps`] ? `` : `, development`} and production dependencies...`);
-exec(`npm -s pack`, {
-    maxBuffer: 1024 * 1024 * 10,
-    timeout: cliArgs.timeout || 3 * 60 * 1000 // 3 min timeout
+spawn("npm pack", {
+    shell: true,
+    stdio: [null, "inherit", "inherit"]
 });
 
 // restoring package.json and lock files back to project root

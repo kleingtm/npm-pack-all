@@ -77,7 +77,6 @@ describe(TEST_SUITE, () => {
             `cp("-Rf","${path.join(process.cwd(), "package-lock.json")}","${TMP_DIR}/package-lock.json")`,
             `cp("-Rf","${path.join(process.cwd(), "yarn.lock")}","${TMP_DIR}/yarn.lock")`,
             `cp("-Rf","${path.join(process.cwd(), ".npmignore")}","${TMP_DIR}/.npmignore")`,
-            `exec("npm -s pack",{"maxBuffer":10485760,"timeout":180000})`,
             `mv("-f","${TMP_DIR}/package.json","${path.join(process.cwd(), "package.json")}")`,
             `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,
@@ -120,7 +119,6 @@ describe(TEST_SUITE, () => {
             return {
                 code: 0, // success always
                 config: { fatal: false, silent: false },
-                exec: mockShellFn(`exec`),
                 cp: mockShellFn(`cp`),
                 mv: mockShellFn(`mv`),
                 rm: mockShellFn(`rm`),
@@ -192,7 +190,6 @@ describe(TEST_SUITE, () => {
             `cp("-Rf","${path.join(process.cwd(), "package-lock.json")}","${TMP_DIR}/package-lock.json")`,
             `cp("-Rf","${path.join(process.cwd(), "yarn.lock")}","${TMP_DIR}/yarn.lock")`,
             `cp("-Rf","${path.join(process.cwd(), ".npmignore")}","${TMP_DIR}/.npmignore")`,
-            `exec("npm -s pack",{"maxBuffer":10485760,"timeout":180000})`,
             `mv("-f","${TMP_DIR}/package.json","${path.join(process.cwd(), "package.json")}")`,
             `mv("-f","${TMP_DIR}/package-lock.json","${path.join(process.cwd(), "package-lock.json")}")`,
             `mv("-f","${TMP_DIR}/yarn.lock","${path.join(process.cwd(), "yarn.lock")}")`,

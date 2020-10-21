@@ -24,15 +24,3 @@ module.exports.safetyDecorator = function(wrapped) {
         }
     };
 };
-
-module.exports.shellExecDecorator = function(wrapped) {
-    return function() {
-        const result = wrapped.apply(this, arguments);
-        if (result.code !== 0) {
-            console.error(JSON.stringify(result));
-            throw new Error(result.stderr);
-        }
-        console.info(result.stdout);
-        return result;
-    };
-};
