@@ -14,7 +14,7 @@ beforeAll(() => {
     console.error = jest.fn();
 });
 
-beforeEach(() => {
+afterEach(() => {
     jest.resetModules();
 });
 
@@ -58,6 +58,20 @@ describe(TEST_SUITE, () => {
                 rm: mockShellFn(`rm`),
                 mkdir: mockShellFn(`mkdir`),
                 touch: mockShellFn(`touch`)
+            };
+        });
+
+        // mock spawn
+        jest.mock(`child_process`, () => {
+            function on(eventType, callback) {
+                callback();
+            }
+            return {
+                spawn: jest.fn(function() {
+                    return {
+                        on
+                    };
+                })
             };
         });
 

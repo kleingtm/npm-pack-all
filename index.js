@@ -42,18 +42,18 @@ setBundledDependencies(packageJson);
 
 // pack with npm
 console.info(`\nPacking source code${!cliArgs[`dev-deps`] ? `` : `, development`} and production dependencies...`);
-spawn("npm pack", {
+const packProcess = spawn("npm pack", {
     shell: true,
     stdio: [null, "inherit", "inherit"]
 });
 
-// restoring package.json and lock files back to project root
-console.info(`Restoring original package.json and lock files`);
-moveFiles(TMP_DIRECTORY, process.cwd(), FILES_TO_BACKUP);
-shell.rm(`-Rf`, TMP_DIRECTORY);
-// shell.rm(`-Rf`, `.npmignore`);
-
-setArtifactName(cliArgs);
+packProcess.on("close", () => {
+    // restoring package.json and lock files back to project root
+    console.info(`Restoring original package.json and lock files`);
+    moveFiles(TMP_DIRECTORY, process.cwd(), FILES_TO_BACKUP);
+    shell.rm(`-Rf`, TMP_DIRECTORY);
+    setArtifactName(cliArgs);
+});
 
 function createTempDirectory(dir) {
     shell.rm(`-Rf`, dir);
