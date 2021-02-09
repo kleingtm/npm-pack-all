@@ -54,30 +54,30 @@ yarn add npm-pack-all
 
 ## Use
 ```bash
-node node_modules/npm-pack-all <optional options>
+node node_modules/.bin/npm-pack-all <optional options>
 ```
 
 ### Basic
 ```bash
-node node_modules/npm-pack-all
+node node_modules/.bin/npm-pack-all
 ```
 
 ### Options
 #### --output
 Output your .tgz artifact to a different directory (or with a different name)
 ```bash
-node node_modules/npm-pack-all --output build/
+node node_modules/.bin/npm-pack-all --output build/
 ```
 
 OR
 
 ```bash
-node node_modules/npm-pack-all --output build/artifact.tgz
+node node_modules/.bin/npm-pack-all --output build/artifact.tgz
 ```
 
 #### --dev-deps
 Bundle all production dependencies AND devDependencies in the artifact
 (use with care -- your artifact will balloon)
 ```bash
-node node_modules/npm-pack-all --dev-deps --output build/artifact.tgz
+node node_modules/.bin/npm-pack-all --dev-deps --output build/artifact.tgz
 ```
