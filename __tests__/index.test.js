@@ -1,6 +1,6 @@
 const minimist = require(`minimist`);
 const path = require(`path`);
-const shell = require(`shelljs`);
+const mockShell = jest.requireActual(`shelljs`);
 const { mockShellFn } = require(path.join(process.cwd(), `mocks/shelljs.mocks`));
 const pickBy = require(`lodash/pickBy`);
 const keys = require(`lodash/keys`);
@@ -9,6 +9,22 @@ const map = require(`lodash/map`);
 
 const TEST_SUITE = `npm-pack-all: ${__filename}`;
 const TMP_DIR = path.join(process.cwd(), ".npm-pack-all-tmp");
+
+beforeEach(() => {
+    // mock shell commands
+    jest.mock(`shelljs`, () => {
+        return {
+            code: 0, // success always
+            config: { fatal: false, silent: false },
+            exec: mockShellFn(`exec`),
+            cp: mockShellFn(`cp`),
+            mv: mockShellFn(`mv`),
+            rm: mockShellFn(`rm`),
+            mkdir: mockShellFn(`mkdir`),
+            touch: mockShellFn(`touch`)
+        };
+    });
+});
 
 beforeAll(() => {
     console.error = jest.fn();
@@ -21,7 +37,7 @@ afterEach(() => {
 afterEach(() => {
     jest.resetAllMocks();
     jest.clearAllMocks();
-    shell.rm(`-Rf`, `*.tgz`); // call this after post mock restore
+    mockShell.rm(`-Rf`, `*.tgz`); // call this after post mock restore
 });
 
 afterAll(() => {
@@ -44,20 +60,6 @@ describe(TEST_SUITE, () => {
                     return arg.includes(`package-lock.json`);
                 }),
                 writeFileSync: jest.fn()
-            };
-        });
-
-        // mock shell commands
-        jest.mock(`shelljs`, () => {
-            return {
-                code: 0, // success always
-                config: { fatal: false, silent: false },
-                exec: mockShellFn(`exec`),
-                cp: mockShellFn(`cp`),
-                mv: mockShellFn(`mv`),
-                rm: mockShellFn(`rm`),
-                mkdir: mockShellFn(`mkdir`),
-                touch: mockShellFn(`touch`)
             };
         });
 
@@ -128,24 +130,11 @@ describe(TEST_SUITE, () => {
             };
         });
 
-        // mock shell commands
-        jest.mock(`shelljs`, () => {
-            return {
-                code: 0, // success always
-                config: { fatal: false, silent: false },
-                cp: mockShellFn(`cp`),
-                mv: mockShellFn(`mv`),
-                rm: mockShellFn(`rm`),
-                mkdir: mockShellFn(`mkdir`),
-                touch: mockShellFn(`touch`)
-            };
-        });
-
         // call script
         require(`../index`);
     });
 
-    test("Does output to --output flag location", () => {
+    function outputTest() {
         const outputLoc = `deploy/artifact.tgz`;
         let mockArgs = `--output ${outputLoc}`;
         mockArgs = minimist(mockArgs.split(` `));
@@ -172,20 +161,6 @@ describe(TEST_SUITE, () => {
             };
         });
 
-        // mock shell commands
-        jest.mock(`shelljs`, () => {
-            return {
-                code: 0, // success always
-                config: { fatal: false, silent: false },
-                exec: mockShellFn(`exec`),
-                cp: mockShellFn(`cp`),
-                mv: mockShellFn(`mv`),
-                rm: mockShellFn(`rm`),
-                mkdir: mockShellFn(`mkdir`),
-                touch: mockShellFn(`touch`)
-            };
-        });
-
         // have access to the mock shell
         const mockShell = require(`shelljs`);
 
@@ -195,6 +170,10 @@ describe(TEST_SUITE, () => {
         const { orderedArgs } = sortModuleMockFnsByCallOrder(mockShell);
         const packageJsonLoc = require(`path`).join(process.cwd(), `package.json`);
         const packageJson = require(packageJsonLoc);
+
+        const packageParse = path.posix.parse(packageJson.name);
+        const scopedPrefix = packageParse.dir ? `${packageParse.dir}-`.replace("@", "") : "";
+        const packageName = `${scopedPrefix}${packageParse.name}-${packageJson.version}.tgz`;
 
         // these commands should be run in the following order by default
         expect(orderedArgs).toEqual([
@@ -210,30 +189,21 @@ describe(TEST_SUITE, () => {
             `mv("-f","${TMP_DIR}/.npmignore","${path.join(process.cwd(), ".npmignore")}")`,
             `rm("-Rf","${TMP_DIR}")`,
             `mkdir("-p","${path.join(process.cwd(), "deploy")}")`,
-            `mv("-f","${path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`)}","${path.join(
-                process.cwd(),
-                outputLoc
-            )}")`
+            `mv("-f","${path.join(process.cwd(), `${packageName}`)}","${path.join(process.cwd(), outputLoc)}")`
         ]);
+    }
+    test("Does output to --output flag location", outputTest);
+    test("Scoped package does output to --output flag location", () => {
+        jest.mock("../package.json", () => {
+            const actualPackageJson = jest.requireActual("../package.json");
+            return Object.assign(actualPackageJson, { name: `@scoped/${actualPackageJson.name}` });
+        });
+        outputTest();
     });
 
     test("Return .npmignore to proper state", () => {
         const fs = jest.requireActual(`fs`);
         const npmIgnoreContent = fs.existsSync(`.npmignore`) && fs.readFileSync(`.npmignore`);
-
-        // mock shell commands
-        jest.mock(`shelljs`, () => {
-            return {
-                code: 0, // success always
-                config: { fatal: false, silent: false },
-                exec: mockShellFn(`exec`),
-                cp: mockShellFn(`cp`),
-                mv: mockShellFn(`mv`),
-                rm: mockShellFn(`rm`),
-                mkdir: mockShellFn(`mkdir`),
-                touch: mockShellFn(`touch`)
-            };
-        });
 
         // call script
         require(`../index`);

@@ -4,7 +4,7 @@ const path = require(`path`);
 const shell = require(`shelljs`);
 const { spawn } = require("child_process");
 
-const { CliError, safetyDecorator } = require(path.join(__dirname, `./utils/utils.index`));
+const { safetyDecorator } = require(path.join(__dirname, `./utils/utils.index`));
 const cp = safetyDecorator(shell.cp);
 const mv = safetyDecorator(shell.mv);
 
@@ -21,9 +21,6 @@ console.info(`
 
 // parse cli args
 const cliArgs = require(`minimist`)(process.argv.slice(2));
-if (typeof cliArgs.output !== `string` && cliArgs.output) {
-    throw new CliError(`--output`, cliArgs.output, `The \`--output\` flag requires a string filename`);
-}
 console.info(`CLI Args: ${JSON.stringify(cliArgs, null, 4)}\n`);
 
 const packageJson = require(path.join(process.cwd(), `package.json`));
@@ -77,23 +74,17 @@ function setBundledDependencies(pj) {
 
 function setArtifactName(args) {
     if (args.output) {
+        const packageParse = path.posix.parse(packageJson.name);
+        const scopedPrefix = packageParse.dir ? `${packageParse.dir}-`.replace("@", "") : "";
+        const packageName = `${scopedPrefix}${packageParse.name}-${packageJson.version}.tgz`;
         const outputDir = path.parse(path.join(process.cwd(), cliArgs.output)).dir;
         if (outputDir && !fs.existsSync(outputDir)) {
             console.info(`Creating directory ${outputDir}`);
             shell.mkdir(`-p`, outputDir);
         }
 
-        console.info(
-            `Moving ${path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`)} to ${path.join(
-                process.cwd(),
-                cliArgs.output
-            )}`
-        );
-        shell.mv(
-            `-f`,
-            path.join(process.cwd(), `${packageJson.name}-${packageJson.version}.tgz`),
-            path.join(process.cwd(), cliArgs.output)
-        );
+        console.info(`Moving ${path.join(process.cwd(), packageName)} to ${path.join(process.cwd(), cliArgs.output)}`);
+        shell.mv(`-f`, path.join(process.cwd(), packageName), path.join(process.cwd(), cliArgs.output));
     }
 }
 
